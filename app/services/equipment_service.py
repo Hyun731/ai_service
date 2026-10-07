@@ -10,7 +10,7 @@ def check_availability(equipment_id: int, quantity: int):
     if equipment is None:
         return None
     available = equipment["available_quantity"]
-    can_allocate = quantity < available
+    can_allocate = quantity <= available
     return {
         "equipment_id": equipment_id,
         "requested_quantity": quantity,
