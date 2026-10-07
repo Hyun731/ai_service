@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, HTTPException, Query
 
 from app.schemas import Availability, Equipment
@@ -12,8 +14,12 @@ def list_equipment():
 
 
 @router.get("/{equipment_id}/availability", response_model=Availability)
-def check_availability(equipment_id: int, quantity: int = Query(ge=1)):
-    result = equipment_service.check_availability(equipment_id, quantity)
+def check_availability(
+    equipment_id: int,
+    quantity: int = Query(ge=1),
+    department: Literal["it", "general"] | None = Query(default=None),
+):
+    result = equipment_service.check_availability(equipment_id, quantity, department)
     if result is None:
         raise HTTPException(status_code=404, detail="Equipment not found")
     return result
